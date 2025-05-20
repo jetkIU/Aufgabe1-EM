@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+  <title>CO2-Tabelle</title>
+</h:head>
+<h:body>
+
+  
+  <h:form rendered="#{not login.loggedIn}">
+    <h:panelGrid columns="2" cellpadding="5">
+      <h:outputLabel for="username" value="Benutzername:" />
+      <h:inputText id="username" value="#{login.username}" required="true" />
+      
+      <h:outputLabel for="password" value="Passwort:" />
+      <h:inputSecret id="password" value="#{login.password}" required="true" />
+    </h:panelGrid>
+    
+    <h:commandButton value="Anmelden" action="#{login.anmelden}" />
+  </h:form>
+
+  
+  <h:form rendered="#{login.loggedIn}">
+    <h:outputText value="CO2-Tabelle" />
+
+    <p:dataTable value="#{informationen.daten}"
+                 var="eintrag"
+                 editable="true"
+                 editMode="row"
+                 rowEditListener="#{informationen.onRowEdit}"
+                 rowCancelListener="#{informationen.onRowCancel}">
+
+      <p:column headerText="Edgar Country Code">
+        <p:cellEditor>
+          <f:facet name="output">
+            <h:outputText value="#{eintrag.edgarCountryCode}" />
+          </f:facet>
+          <f:facet name="input">
+            <h:inputText value="#{eintrag.edgarCountryCode}" />
+          </f:facet>
+        </p:cellEditor>
+      </p:column>
+
+      <p:column headerText="Country">
+        <p:cellEditor>
+          <f:facet name="output">
+            <h:outputText value="#{eintrag.country}" />
+          </f:facet>
+          <f:facet name="input">
+            <h:inputText value="#{eintrag.country}" />
+          </f:facet>
+        </p:cellEditor>
+      </p:column>
+
+      <p:column headerText="2023">
+        <p:cellEditor>
+          <f:facet name="output">
+            <h:outputText value="#{eintrag.jahr2023}" />
+          </f:facet>
+          <f:facet name="input">
+            <h:inputText value="#{eintrag.jahr2023}" />
+          </f:facet>
+        </p:cellEditor>
+      </p:column>
+
+      <!-- Editier-Spalte -->
+      <p:column style="width:6rem">
+        <p:rowEditor />
+      </p:column>
+    </p:dataTable>
+  </h:form>
+
+ 
+  <h:form rendered="#{login.loggedIn}">
+    <h:commandButton value="Abmelden" action="#{login.logout}" />
+  </h:form>
+
+ 
+  <h:form rendered="#{not login.loggedIn}">
+    <h:outputText value="CO2-Tabelle" />
+    <p:dataTable value="#{informationen.daten}" var="eintrag">
+      <p:column headerText="Edgar Country Code">
+        <h:outputText value="#{eintrag.edgarCountryCode}" />
+      </p:column>
+
+      <p:column headerText="Country">
+        <h:outputText value="#{eintrag.country}" />
+      </p:column>
+
+      <p:column headerText="2023">
+        <h:outputText value="#{eintrag.jahr2023}" />
+      </p:column>
+    </p:dataTable>
+  </h:form>
+
+</h:body>
+</html>
